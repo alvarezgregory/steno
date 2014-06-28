@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Steno">
+    <link rel="shortcut icon" href="../img/favicon.png">
+
+    <title>Steno.io - How it works</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="./css/style.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+<body>
+<body>
+
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">Steno.io <a class="redBrand">(alpha)</a></h3>
+              <ul class="nav masthead-nav">
+                <li><a href="./index.html">Home</a></li>
+                <li class="active"><a href="./how.html">How it works</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="inner cover">
+
+            <div class="coverHow left">
+            <div class="illustration"><img width="75px" src="./img/padlock.png" alt="padlock" /></div>
+            <p class="lead how">Steno.io use the <strong><a href="http://eprint.iacr.org/2013/551">Puzzle algorithm</a></strong> to generate a secure relation between two sets of words based on your password. The words in your message are then replaced by their coresponding ones in the other set. The key size start at 512 bits and grow with your password's size, there is no limit to it. This is an alpha version and right now the ciphered message doesn't have a meaning. This will be improved in further releases.</p>
+            </div>
+
+            <div class="coverHow right">
+            <div class="illustration"><img width="75px" src="./img/js.png" alt="javascript" /></div>
+            <p class="lead how">The application is made entirely in javascript. There is no cookie, no server, no information sent/received or saved. Everything happens in your browser. You can even download the page and use it offline. Once you're done just send your ciphered message via your habitual channel of communication. You can even write it down on a postal card, it is a lot harder to track than email.</p>
+            </div>
+
+            <div class="coverHow left">
+            <div class="illustration"><img width="75px" src="./img/github.png" alt="javascript" /></div>
+            <p class="lead how">Open source application create more secure and better software, giving back the control of the information to the users. This is why Steno.io is under the BSD license. You can checkout the source code at <a href="https://github.com/alvarezgregory/steno">Github</a>.</p>
+            </div>
+
+          </div>
+
+          <!--<div class="mastfoot">
+            <div class="inner">
+              <p>Created by </p>
+            </div>
+          </div>-->
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+<script src="./js/jquery-2.1.1.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script src="./js/sha512.js"></script>
+<script src="./js/puzzle.js"></script>
+<script src="./js/dico.js"></script>
+<script src="./js/navigation.js"></script>
+</body>
+</html>

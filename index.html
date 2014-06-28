@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Steno">
+    <link rel="shortcut icon" href="../img/favicon.png">
+
+    <title>Steno.io</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="./css/style.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+<body>
+
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">Steno.io <a class="redBrand">(alpha)</a></h3>
+              <ul class="nav masthead-nav">
+                <li class="active"><a href="./index.html">Home</a></li>
+                <li><a href="./how.html">How it works</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div id="toHide" class="inner cover">
+            <h1 class="cover-heading">The best way to hide something is to put it where everyone can see it.</h1>
+            <p class="lead"> Because your privacy matter and ciphered communication atrack attention, <strong>Steno.io</strong> gives you the ability to send message looking like normal text with the robustess of an encryption algorithm.</p>
+            <p class="lead">
+              <a onclick="showApp()" class="btn btn-lg btn-default">Start now</a>
+            </p>
+          </div>
+
+            <div id="app" class="inner cover">
+            <div class="textinput">
+            <textarea rows="4" id="textAera" placeholder="Write down your message..."></textarea>
+            </div>
+            <div class="input-group">
+              <input type="password" id="pwd" class="form-control" placeholder="Chose a password">
+              <div id="error"></div>
+            </div>
+            <div class="boutongroup">
+            <button type="button" onclick="decrypt()" class="btn btn-default">
+                Decrypt</span>
+              </button>
+            <button type="button" onclick="encrypt()" class="btn btn-default">
+                Encrypt</span>
+              </button>
+            </div>
+            </div>
+
+          <!--<div class="mastfoot">
+            <div class="inner">
+              <p>Created by </p>
+            </div>
+          </div>-->
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+<script src="./js/jquery-2.1.1.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script src="./js/sha512.js"></script>
+<script src="./js/puzzle.js"></script>
+<script src="./js/dico.js"></script>
+<script src="./js/navigation.js"></script>
+</body>
+</html>
