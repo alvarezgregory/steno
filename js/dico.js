@@ -158,9 +158,9 @@ function loadDicionary(name) {
 
         var y = 1; 
         for ( var i = 0; i < words.length; i++ ) {
-            if(!dict[words[i]]) {
-                dict[ words[i] ] = y;
-                pos[y - 1] = words[i];
+            if(!dict[words[i].toLowerCase()]) {
+                dict[ words[i].toLowerCase() ] = y;
+                pos[y - 1] = words[i].toLowerCase();
                 y++;
             }
         }
