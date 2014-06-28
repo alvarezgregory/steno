@@ -81,17 +81,6 @@ a:hover {
  * How
  */
 
-@media (min-width: 768px) {
-  .cover-container {
-    padding-top: 70px;
-   }
-
-    .how {
-        font-size: 17px;
-    }
-
-}
-
 .how {
     float: right;
     width: 80%;
@@ -118,6 +107,52 @@ a:hover {
 .right .illustration {
     float: right;
     text-align: right;
+}
+
+@media(max-width:767px){
+
+    .padlock {
+        margin-top: 75px;
+    }
+
+    .js {
+        margin-top: 75px;
+    }
+
+    .github {
+        margin-top: 35px;
+    }
+
+    .how {
+        width: 70%;
+    }
+
+}
+
+@media (min-width: 768px) {
+  .cover-container {
+    padding-top: 70px;
+   }
+
+    .how {
+        font-size: 17px;
+    }
+
+}
+@media(min-width:992px){
+
+    .padlock {
+        margin-top: 25px;
+    }
+
+    .js {
+        margin-top: 25px;
+    }
+
+    .github {
+
+    }
+
 }
 
 /*
