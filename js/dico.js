@@ -7,9 +7,20 @@ function processText(encrypt) {
     var nodeError = document.getElementById("error");
     nodeError.innerHTML = "";
 
-    if(Object.keys(dictionary).length != 5 || document.getElementById("pwd").value == "" || document.getElementById("textAera").value == "") {
-
-        nodeError.innerHTML = "Missing information";
+    if(Object.keys(dictionary).length != 5) {
+        nodeError.innerHTML = "Internal error : missing dictionaries";
+        return;
+    }
+    if(document.getElementById("textAera").value == "") {
+        nodeError.innerHTML = "No message to encrypt/decrypt.";
+        return;
+    }
+    if(document.getElementById("pwd").value == "") {
+        nodeError.innerHTML = "Need a password !";
+        return;
+    }
+    if(document.getElementById("pwd").value.length < 9) {
+        nodeError.innerHTML = "Password too short, minimum 9 characters.";
         return;
     }
 
@@ -61,7 +72,7 @@ function processText(encrypt) {
 
     }
     else {
-        nodeError.innerHTML = "word not in dictionary : " + nodeError.innerHTML;
+        nodeError.innerHTML = "Word not in dictionary : " + nodeError.innerHTML;
     }
 
 }
