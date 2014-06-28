@@ -25,6 +25,7 @@ function processText(encrypt) {
     }
 
     var text = document.getElementById("textAera").value;
+    text = text.replace(/(?:\r\n|\r|\n)/g, ' ');
     var array = text.split(" ");
 
     var result = true;
