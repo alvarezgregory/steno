@@ -112,6 +112,26 @@ a:hover {
 @media(max-width:767px){
 
     .padlock {
+        margin-top: 35px;
+    }
+
+    .js {
+        margin-top: 35px;
+    }
+
+    .github {
+        margin-top: 5px;
+    }
+
+    .how {
+        width: 70%;
+    }
+
+}
+
+@media(max-width:480px){
+
+    .padlock {
         margin-top: 75px;
     }
 
