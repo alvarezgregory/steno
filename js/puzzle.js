@@ -81,11 +81,11 @@ function generateKey(pwd) {
     /* Convert HEX into int array */
     var key = [];
 
-    for(y = 0; y < 4; y++) {
+    for(y = 0; y < 2; y++) {
 
-        for(i = 0; i < secondFinalKey.length - 6; i = i + 8) {
+        for(i = 0; i < secondFinalKey.length - 6; i = i + 4) {
 
-            var temp = secondFinalKey.charAt(i + (y * 2)) + secondFinalKey.charAt(i + (y * 2) + 1) + secondFinalKey.charAt(i + (y * 2) + 2) + secondFinalKey.charAt(i + (y * 2) + 3) + secondFinalKey.charAt(i + (y * 2) + 4) + secondFinalKey.charAt(i + (y * 2) + 5) + secondFinalKey.charAt(i + (y * 2) + 6) + secondFinalKey.charAt(i + (y * 2) + 7);
+            var temp = secondFinalKey.charAt(i + (y * 2)) + secondFinalKey.charAt(i + (y * 2) + 1) + secondFinalKey.charAt(i + (y * 2) + 2) + secondFinalKey.charAt(i + (y * 2) + 3); // + secondFinalKey.charAt(i + (y * 2) + 4) + secondFinalKey.charAt(i + (y * 2) + 5) + secondFinalKey.charAt(i + (y * 2) + 6) + secondFinalKey.charAt(i + (y * 2) + 7);
             key.push(parseInt(temp, 16));
 
         }
