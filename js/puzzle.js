@@ -1,5 +1,5 @@
 
-function generateKey(pwd) {
+function generateKey(pwd, iv) {
 	
 	var nbLetter = 3;
 	var sizeKey = Math.ceil(pwd.length / nbLetter);
@@ -92,6 +92,38 @@ function generateKey(pwd) {
 
     }
 
+    /* IV Generation */
+    var ivSha = "";
+    var ivKey = [];
+    var shaFirst = new jsSHA(iv, 'TEXT');
+    ivSha += shaFirst.getHash("SHA-512", "HEX");
+	for(i = 0; i < sizeNbBlock; i++) {
+		var sha = new jsSHA(ivSha, 'TEXT');
+        ivSha +=  sha.getHash("SHA-512", "HEX");
+    }
+
+    /* Emulation of the shift byte */
+    ivSha = ivSha + ivSha.charAt(0) + ivSha.charAt(1);
+    ivSha = ivSha + ivSha.charAt(2) + ivSha.charAt(3);
+    ivSha = ivSha + ivSha.charAt(4) + ivSha.charAt(5);
+
+    for(y = 0; y < 2; y++) {
+
+        for(i = 0; i < ivSha.length - 6; i = i + 4) {
+
+            var temp = ivSha.charAt(i + (y * 2)) + ivSha.charAt(i + (y * 2) + 1) + ivSha.charAt(i + (y * 2) + 2) + ivSha.charAt(i + (y * 2) + 3); // + ivSha.charAt(i + (y * 2) + 4) + ivSha.charAt(i + (y * 2) + 5) + ivSha.charAt(i + (y * 2) + 6) + ivSha.charAt(i + (y * 2) + 7);
+            ivKey.push(parseInt(temp, 16));
+
+        }
+
+    }
+
+    for(i = 0; i < key.length; i++) {
+
+        //key[i] = ((key[i] * ivKey[i % ivKey.length]) % key[i]) + ivKey[i % ivKey.length];
+        key[i] = key[i] + ivKey[i % ivKey.length];
+    }
+
     return key;
 
 }
@@ -147,22 +179,4 @@ function generateMap(size, key) {
 function reverseString(s){
     return s.split("").reverse().join("");
 }
-
-/*
-var k = generateKey("lepetitchaperonrouge");
-var map = generateMap(300, k);
-for(i = 0; i < map['encrypt'].length; i++) {
-
-    document.write(i.toString() + " => " + map['encrypt'][i].toString() + " => " + map['decrypt'][map['encrypt'][i]].toString() + "<br/> ");
-
-}
-*/
-
-/*
-var k = generateKey("lepetitchaperonrouge");
-for(i = 0; i < k.length; i++) {
-
-    document.write(k[i].toString() + " - ");
-
-}*/
 

@@ -26,6 +26,14 @@ function processText(encrypt) {
 
     var text = document.getElementById("textAera").value;
     text = text.replace(/(?:\r\n|\r|\n)/g, ' ');
+
+    var iv = "";
+    if(encrypt) iv = generateIv();
+    else {
+        iv = text.split(".")[0];
+        text = text.replace(iv + ".", "");
+    }
+
     var array = text.split(" ");
 
     var result = true;
@@ -46,6 +54,7 @@ function processText(encrypt) {
     if(result) {
 
         document.getElementById("textAera").value = "";
+        if(encrypt) document.getElementById("textAera").value += iv + " ";
 
         for(var i = 0; i < array.length; i++) {
 
@@ -65,7 +74,7 @@ function processText(encrypt) {
             array[i] = removePonctuation(array[i]);
 
             var dicoName = getDicoName(array[i].toLowerCase());
-            var word = changeWord(array[i], dicoName, encrypt);
+            var word = changeWord(array[i], dicoName, encrypt, iv);
 
             document.getElementById("textAera").value += punctuationBegining + word + punctuationEnd + " ";
 
@@ -88,6 +97,32 @@ function getDicoName(word) {
 
 }
 
+function generateIv() {
+
+    var nbWords = Math.floor((Math.random() * 10) + 1);
+
+    var iv = "";
+    var size = 0;
+
+    while(size < nbWords) {
+        for (var key in dictionary) {
+            if (dictionary.hasOwnProperty(key)) {
+                var ts = Math.round((new Date()).getTime()); 
+                var p = (Math.floor((Math.random() * dictionary[key]["position"].length) + 1) * ts) %  dictionary[key]["position"].length;
+
+                if(iv != "") iv += " "; 
+
+                iv += dictionary[key]["position"][p];
+                size++;
+            }
+        }
+    }
+    iv += ".";
+
+    return iv;
+
+}
+
 function isPunctuation(word) {
 
     var p = [".", ",", "?", ";", ":", "(", ")", "{", "}", "-", "_", "!"];
@@ -97,12 +132,14 @@ function isPunctuation(word) {
 
 }
 
-function changeWord(word, dicoName, encrypt) {
+function changeWord(word, dicoName, encrypt, iv) {
 
-    if(map[dicoName] == null || password[dicoName] != document.getElementById("pwd").value) {
-        password[dicoName] = document.getElementById("pwd").value;
-        map[dicoName] = generateMap(dictionary[dicoName]["position"].length, generateKey(password[dicoName])); 
-    }
+    password[dicoName] = document.getElementById("pwd").value;
+    var ivNext = removePonctuation(iv);
+    ivNext = ivNext.replace(/ /g, "");
+    ivNext = ivNext.toLowerCase();
+    ivNext += dicoName;
+    map[dicoName] = generateMap(dictionary[dicoName]["position"].length, generateKey(password[dicoName], ivNext)); 
 
     var position = dictionary[dicoName]["lookup"][removePonctuation(word)] - 1;
     var w = "";
@@ -129,9 +166,9 @@ function decrypt() {
 
 }
 
-function removePonctuation(txt) {
+function removePonctuation(text) {
 
-    txt = txt.replace(".", "");
+    var txt = text.replace(/\./g, "");
     txt = txt.replace(",", "");
     txt = txt.replace("?", "");
     txt = txt.replace(";", "");
@@ -153,7 +190,8 @@ function loadDicionary(name) {
 
     $.get("dico/english/" + name + ".txt", function( txt ) {
         var dict = {};
-        var words = txt.split( "\r\n" );
+        var text = txt.replace(/(?:\r\n|\r|\n)/g, '\r\n');
+        var words = text.split( "\r\n" );
         var pos = [];        
 
         var y = 1; 
