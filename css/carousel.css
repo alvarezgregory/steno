@@ -176,6 +176,9 @@ a, a:hover, a:visited, a:active {
     border-color: red;
 }
 
+.featurette {
+    text-align: center;
+} 
 
 #textAera {
 
@@ -197,7 +200,7 @@ a, a:hover, a:visited, a:active {
 #app {
 
     text-align: center;
-    margin-top: 10%;
+    margin-top: 20px;
 
 }
 
