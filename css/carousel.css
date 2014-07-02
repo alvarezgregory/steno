@@ -5,6 +5,7 @@
 body {
   padding-bottom: 40px;
   color: #5a5a5a;
+    background-image:url(../img/white.png);
 }
 
 
@@ -225,3 +226,16 @@ a, a:hover, a:visited, a:active {
     margin: 20px;
 
 }
+
+#pwd {
+    border-color: #706E6E;
+}
+
+#textAera {
+    border-color: #706E6E;
+}
+
+#textAera:focus, #pwd:focus, textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable-input:focus {   
+border-color: rgba(231, 38, 37, 0.8);
+box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(231, 38, 37, 0.6);
+outline: 0 none;}
