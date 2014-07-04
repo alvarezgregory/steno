@@ -1,13 +1,15 @@
 var dictionary = {};
 var map = {};
 var password = {};
+var initVector = {};
+var dictionaryNames = ["adjectives", "adverbs", "nouns", "verbs", "pronouns"];
 
 function processText(encrypt) {
 
     var nodeError = document.getElementById("error");
     nodeError.innerHTML = "";
 
-    if(Object.keys(dictionary).length != 5) {
+    if(Object.keys(dictionary).length != dictionaryNames.length) {
         nodeError.innerHTML = "Internal error : missing dictionaries";
         return;
     }
@@ -28,7 +30,7 @@ function processText(encrypt) {
     text = text.replace(/(?:\r\n|\r|\n)/g, ' ');
 
     var iv = "";
-    if(encrypt) iv = generateIv();
+    if(encrypt) iv = generateIv(text.split(" ").length);
     else {
         iv = text.split(".")[0];
         text = text.replace(iv + ".", "");
@@ -97,9 +99,9 @@ function getDicoName(word) {
 
 }
 
-function generateIv() {
+function generateIv(size) {
 
-    var nbWords = Math.floor((Math.random() * 10) + 1);
+    var nbWords = Math.floor((Math.random() * (0.20 * size)) + 1);
 
     var iv = "";
     var size = 0;
@@ -114,6 +116,7 @@ function generateIv() {
 
                 iv += dictionary[key]["position"][p];
                 size++;
+                if(size > nbWords) break;
             }
         }
     }
@@ -134,12 +137,15 @@ function isPunctuation(word) {
 
 function changeWord(word, dicoName, encrypt, iv) {
 
-    password[dicoName] = document.getElementById("pwd").value;
-    var ivNext = removePonctuation(iv);
-    ivNext = ivNext.replace(/ /g, "");
-    ivNext = ivNext.toLowerCase();
-    ivNext += dicoName;
-    map[dicoName] = generateMap(dictionary[dicoName]["position"].length, generateKey(password[dicoName], ivNext)); 
+    if(map[dicoName] == null || password[dicoName] != document.getElementById("pwd").value || initVector[dicoName] != iv) {
+        password[dicoName] = document.getElementById("pwd").value;
+        initVector[dicoName] = iv;
+        var ivNext = removePonctuation(iv);
+        ivNext = ivNext.replace(/ /g, "");
+        ivNext = ivNext.toLowerCase();
+        ivNext += dicoName;
+        map[dicoName] = generateMap(dictionary[dicoName]["position"].length, generateKey(password[dicoName], ivNext)); 
+    }
 
     var position = dictionary[dicoName]["lookup"][removePonctuation(word)] - 1;
     var w = "";
@@ -186,7 +192,18 @@ function removePonctuation(text) {
     return txt;
 }
 
-function loadDicionary(name) {
+function loadDicionary() {
+
+    var name = "";
+    for ( var i = 0; i < dictionaryNames.length; i++ ) {
+        if(dictionary[dictionaryNames[i]]) continue;
+        else {
+            name = dictionaryNames[i];
+            break;
+        }
+    }
+
+    if(name === "") return;
 
     $.get("dico/english/" + name + ".txt", function( txt ) {
         var dict = {};
@@ -196,7 +213,7 @@ function loadDicionary(name) {
 
         var y = 1; 
         for ( var i = 0; i < words.length; i++ ) {
-            if(!dict[words[i].toLowerCase()]) {
+            if(!getDicoName(words[i].toLowerCase()) && !dict[words[i].toLowerCase()]) {
                 dict[ words[i].toLowerCase() ] = y;
                 pos[y - 1] = words[i].toLowerCase();
                 y++;
@@ -205,14 +222,10 @@ function loadDicionary(name) {
 
         dictionary[name] = {"lookup": dict, "position": pos};
 
+        loadDicionary();
+
     });
 
 }
 
-//loadDicionary("all");
-loadDicionary("adjectives");
-loadDicionary("adverbs");
-loadDicionary("nouns");
-loadDicionary("verbs");
-loadDicionary("pronouns");
-
+loadDicionary();
