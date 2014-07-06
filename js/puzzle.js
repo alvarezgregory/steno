@@ -118,11 +118,12 @@ function generateKey(pwd, iv) {
 
     }
 
-    for(i = 0; i < key.length; i++) {
+    for(i = 0; i < key.length - 1; i++) {
 
-        //key[i] = ((key[i] * ivKey[i % ivKey.length]) % key[i]) + ivKey[i % ivKey.length];
-        key[i] = key[i] + ivKey[i % ivKey.length];
+        key[i] = ((key[i] * ivKey[i % ivKey.length]) % key[i + 1]) + ivKey[i % ivKey.length];
     }
+    var i = key.length - 1;
+    key[i] = ((key[i] * ivKey[i % ivKey.length]) % key[0]) + ivKey[i % ivKey.length];
 
     return key;
 
