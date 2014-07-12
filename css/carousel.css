@@ -239,3 +239,28 @@ a, a:hover, a:visited, a:active {
 border-color: rgba(231, 38, 37, 0.8);
 box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(231, 38, 37, 0.6);
 outline: 0 none;}
+
+.featurette-heading {
+    margin-top:0px;
+    margin-bottom: 20px;
+}
+
+.featurette-heading, .lead {
+    text-align: left;
+}
+
+.author {
+    font-size:12px;
+}
+
+.twitter {
+    float: right;
+}
+
+@media (min-width: 768px) {
+
+    .twitter {
+       margin-top: 22px;
+    }
+
+}

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <link rel="icon" href="./img/favicon.png">
 
     <title>Steno.io - Steganography web application</title>
 
@@ -44,25 +44,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>-->
-              <h3 class="brand">Steno.io <a class="redBrand">(alpha)</a></h3>
+              <h3 class="brand">Steno.io <a class="redBrand">(alpha)</a> <div class="twitter visible-xs"><a href="http://twitter.com/stenoio"><img src="./img/twitter.png" alt="twitter" /></a></div></h3>
+            
             </div>
+            <div class="twitter hidden-xs"><a href="http://twitter.com/stenoio"><img src="./img/twitter.png" alt="twitter" /></a></div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <!--
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li class="dropdown-header">Nav header</li>
-                    <li><a href="#">Separated link</a></li>
-                    <li><a href="#">One more separated link</a></li>
-                    -->
                   </ul>
                 </li>
               </ul>
@@ -82,8 +69,8 @@
         <div class="item active">
           <div class="container">
             <div class="carousel-caption">
-            <h1>The best way to hide something is to put it where everyone can see it.</h1>
-            <p>Electronic encrypted communication attract attention. Because your privacy matter, <strong>Steno.io</strong> gives you the ability to send messages looking like normal text with the robustness of an encryption algorithm.</p>
+            <h1>“Sometimes it's best to hide in plain sight.”</h1>
+            <p>Electronic encrypted communication attract attention. Because our privacy matter, <strong>Steno.io</strong> gives us the ability to send messages looking like normal text with the robustness of an encryption algorithm.</p>
               <p><a href="#steno" class="btn btn-lg btn-default">Start now</a></p>
             </div>
           </div>
@@ -104,12 +91,12 @@
         <div class="col-lg-4">
           <img src="./img/padlock.png" alt="Generic placeholder image" style="height: 140px;">
           <h2>Security</h2>
-            <p class="info">Steno.io use the <strong><a href="http://eprint.iacr.org/2013/551">Puzzle algorithm</a></strong> to generate a secure relation between two sets of words based on your password. The words in your message are then replaced by their coresponding ones in the other set. The key size start at 512 bits and grow with your password's size, there is no limit to it. This is an alpha version and right now the ciphered message doesn't have a meaning. This will be improved in further releases.</p>
+            <p class="info">Steno.io brings encryption to a next level: a piece of paper. It use the <strong><a href="http://eprint.iacr.org/2013/551">Puzzle algorithm</a></strong> to generate a secure relation between two sets of words based on a password. The words in the message are then replaced by their coresponding ones in the other set (a dictionary). By having a ciphertext composed of words, Steno.io is able to hide the message in the massive amout of information that is internet. But its best advantage is when wrote down on a paper, it can evade any electronic surveillance.</p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
           <img src="./img/js.png" alt="Generic placeholder image" style="height: 140px;">
-          <h2>Full Javascript</h2>
-            <p class="info">The application is made entirely in javascript. There is no cookie, no server, no information sent/received or saved. Everything happens in your browser. You can even download the page and use it offline. Once you're done just send your encrypted message via your habitual channel of communication. You can even write it down on a postal card, it is a lot harder to track than emails.</p>
+          <h2>Full JavaScript</h2>
+            <p class="info">The application is made entirely in JavaScript. There is no cookie, no server, no tracking, no information sent/received or saved. Everything happens in your browser. You can download the page and use it offline. Once you're done just send your encrypted message via your habitual channel of communication. You can even write it down on a postal card, it is a lot harder to track than emails. </p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
           <img src="./img/github.png" alt="Generic placeholder image" style="height: 140px;">
@@ -122,6 +109,7 @@
 
       <div class="row featurette" id="steno">
             <h1>Steno.io</h1>
+            <p>(Only english supported right now)</p>
             <div id="app" class="inner cover">
             <div class="textinput">
             <textarea rows="4" id="textAera" placeholder="Write down your message..."></textarea>
@@ -146,7 +134,7 @@
       <!-- FOOTER -->
       <footer>
         <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>&copy; 2014 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+        <p>&copy; 2014 Steno.io, Inc. &middot; <a href="http://gregoryalvarez.com">Author</a> &middot; <a href="http://twitter.com/stenoio">Twitter</a> &middot; <a href="https://github.com/alvarezgregory/steno">Github</a></p>
       </footer>
 
     </div><!-- /.container -->
