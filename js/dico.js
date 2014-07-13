@@ -4,7 +4,7 @@ var password = {};
 var initVector = {};
 var dictionaryNames = ["adjectives", "adverbs", "nouns", "verbs", "pronouns", "prepo"];
 
-function processText(encrypt) {
+function processText(encrypt, force) {
 
     var nodeError = document.getElementById("error");
     nodeError.innerHTML = "";
@@ -41,16 +41,18 @@ function processText(encrypt) {
     var result = true;
 
     /* Check if words isn't in dictionary */
-    for(var i = 0; i < array.length; i++) {
+    if(!force) {
+        for(var i = 0; i < array.length; i++) {
 
-        var word = removePonctuation(array[i]);
-        if(!getDicoName(word)) {
-            result = false;
+            var word = removePonctuation(array[i]);
+            if(!getDicoName(word)) {
+                result = false;
 
-            nodeError.innerHTML = nodeError.innerHTML + word + " ";
-            /* underline word */
+                nodeError.innerHTML = nodeError.innerHTML + word + " ";
+                /* underline word */
+            }
+
         }
-
     }
 
     if(result) {
@@ -76,7 +78,9 @@ function processText(encrypt) {
             array[i] = removePonctuation(array[i]);
 
             var dicoName = getDicoName(array[i].toLowerCase());
-            var word = changeWord(array[i], dicoName, encrypt, iv);
+            var word = "";
+            if(dicoName) word = changeWord(array[i], dicoName, encrypt, iv);
+            else word = array[i].toLowerCase();
 
             document.getElementById("textAera").value += punctuationBegining + word + punctuationEnd + " ";
 
@@ -84,7 +88,10 @@ function processText(encrypt) {
 
     }
     else {
-        nodeError.innerHTML = "Word not in dictionary : " + nodeError.innerHTML;
+        nodeError.innerHTML = "These words are not in the dictionary: " + nodeError.innerHTML + ".";
+        nodeError.innerHTML += "<br />They will not be encrypted, do you want to proceed anyway ?"
+        $(".boutongroup").hide();
+        $(".boutongroupsure").show();
     }
 
 }
@@ -158,17 +165,35 @@ function changeWord(word, dicoName, encrypt, iv) {
 
 function encrypt() {
 
-    /*var node = document.getElementById("result");
-    node.innerHTML = "Generating..."; */
-    processText(true);
+    processText(true, false);
 
 }
 
 function decrypt() {
 
-    /*var node = document.getElementById("result");
-    node.innerHTML = "Generating..."; */
-    processText(false);
+    processText(false, true);
+
+}
+
+function encryptSure() {
+
+    processText(true, true);
+
+    var nodeError = document.getElementById("error");
+    nodeError.innerHTML = "";
+    
+    $(".boutongroup").show();
+    $(".boutongroupsure").hide();
+
+}
+
+function decryptSure() {
+
+    var nodeError = document.getElementById("error");
+    nodeError.innerHTML = "";
+    
+    $(".boutongroup").show();
+    $(".boutongroupsure").hide();
 
 }
 

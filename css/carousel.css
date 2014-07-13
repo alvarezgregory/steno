@@ -227,6 +227,16 @@ a, a:hover, a:visited, a:active {
 
 }
 
+#app .boutongroupsure button {
+
+    margin: 20px;
+}
+
+#app .boutongroupsure {
+
+    display: none;
+}
+
 #pwd {
     border-color: #706E6E;
 }
