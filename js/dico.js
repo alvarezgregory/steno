@@ -2,7 +2,7 @@ var dictionary = {};
 var map = {};
 var password = {};
 var initVector = {};
-var dictionaryNames = ["adjectives", "adverbs", "nouns", "verbs", "pronouns"];
+var dictionaryNames = ["adjectives", "adverbs", "nouns", "verbs", "pronouns", "prepo"];
 
 function processText(encrypt) {
 
