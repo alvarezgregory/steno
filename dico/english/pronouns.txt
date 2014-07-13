@@ -37,6 +37,7 @@ neither
 no
 one
 on
+or
 nobody
 none
 nothing
