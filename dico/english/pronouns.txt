@@ -46,6 +46,7 @@ another
 other
 others
 ours
+our
 ourselves
 several
 she

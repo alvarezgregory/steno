@@ -1322,6 +1322,7 @@ haunt
 haunts
 have
 haves
+having
 haw
 hawk
 hawks
