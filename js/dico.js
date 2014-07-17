@@ -1,5 +1,6 @@
 var dictionary = {};
 var map = {};
+var encryptionkey = {};
 var password = {};
 var initVector = {};
 var dictionaryNames = ["adjectives", "adverbs", "nouns", "verbs", "pronouns", "prepo"];
@@ -60,6 +61,8 @@ function processText(encrypt, force) {
         document.getElementById("textAera").value = "";
         if(encrypt) document.getElementById("textAera").value += iv + " ";
 
+        var positionWord = 0;
+
         for(var i = 0; i < array.length; i++) {
 
             if(array[i] == "") continue;
@@ -79,7 +82,10 @@ function processText(encrypt, force) {
 
             var dicoName = getDicoName(array[i].toLowerCase());
             var word = "";
-            if(dicoName) word = changeWord(array[i], dicoName, encrypt, iv);
+            if(dicoName) {
+                word = changeWord(array[i], dicoName, encrypt, iv, positionWord);
+                positionWord++;
+            }
             else word = array[i].toLowerCase();
 
             document.getElementById("textAera").value += punctuationBegining + word + punctuationEnd + " ";
@@ -142,7 +148,7 @@ function isPunctuation(word) {
 
 }
 
-function changeWord(word, dicoName, encrypt, iv) {
+function changeWord(word, dicoName, encrypt, iv, positionWord) {
 
     if(map[dicoName] == null || password[dicoName] != document.getElementById("pwd").value || initVector[dicoName] != iv) {
         password[dicoName] = document.getElementById("pwd").value;
@@ -151,14 +157,37 @@ function changeWord(word, dicoName, encrypt, iv) {
         ivNext = ivNext.replace(/ /g, "");
         ivNext = ivNext.toLowerCase();
         ivNext += dicoName;
-        map[dicoName] = generateMap(dictionary[dicoName]["position"].length, generateKey(password[dicoName], ivNext)); 
+        encryptionkey[dicoName] = generateKey(password[dicoName], ivNext);
+        map[dicoName] = generateMap(dictionary[dicoName]["position"].length, encryptionkey[dicoName]["map"]); 
+    }
+
+    /* regenerate keys if all used to prevent having twice a plaintext words with same ciphertext word */
+    if(positionWord != 0 && (positionWord % encryptionkey[dicoName]["obfuscation"].length == 0)) {
+        encryptionkey[dicoName] = regenerateKeys(encryptionkey[dicoName]);
+        map[dicoName] = generateMap(dictionary[dicoName]["position"].length, encryptionkey[dicoName]["map"]); 
     }
 
     var position = dictionary[dicoName]["lookup"][removePonctuation(word)] - 1;
     var w = "";
+    
+    if(encrypt) { 
 
-    if(encrypt) w = dictionary[dicoName]["position"][map[dicoName]["encrypt"][position]];
-    else w = dictionary[dicoName]["position"][map[dicoName]["decrypt"][position]];
+        var encryptPosition = (map[dicoName]["encrypt"][position] + (encryptionkey[dicoName]["obfuscation"][positionWord % encryptionkey[dicoName]["obfuscation"].length] % dictionary[dicoName]["position"].length)) % dictionary[dicoName]["position"].length;
+        w = dictionary[dicoName]["position"][encryptPosition];
+
+    }
+    else {
+
+        var x = 0;
+
+        while( ((x + (encryptionkey[dicoName]["obfuscation"][positionWord % encryptionkey[dicoName]["obfuscation"].length] % dictionary[dicoName]["position"].length)) % dictionary[dicoName]["position"].length) != position || x >= map[dicoName]["encrypt"].length) {
+            x++;
+        }
+
+        var decryptPosition = map[dicoName]["decrypt"][x];
+         w = dictionary[dicoName]["position"][decryptPosition];
+
+    }
 
     return w;
 }

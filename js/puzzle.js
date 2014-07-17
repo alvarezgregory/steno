@@ -8,32 +8,32 @@ function generateKey(pwd, iv) {
 	sizeKey = sizeKey * 128; /* Size SHA512 Hex */
 	var reversePwd = reverseString(pwd);
 	
-	//var firstIntermediateKey = "";
+	var firstIntermediateKey = "";
 	var secondIntermediateKey = "";
-	//var firstFinalKey = "";
+	var firstFinalKey = "";
 	var secondFinalKey = "";
 	
 	/* First round of hash generation  */
 	for(i = 0; i < sizeNbBlock; i++) {
 
-		//var tempPass = "";
+		var tempPass = "";
 		var tempPassReverse = "";
 		if(i == sizeNbBlock - 1) {
 			for(y = 0; y < i * nbLetter + sizePasswordLeft; y++) {
-				//tempPass = tempPass + pwd.charAt(y);
+				tempPass = tempPass + pwd.charAt(y);
 				tempPassReverse = tempPassReverse + reversePwd.charAt(y);
 			}  
 		}else {
 			for(y = 0; y < i * nbLetter + nbLetter; y++) {
-				//tempPass = tempPass + pwd.charAt(y);
+				tempPass = tempPass + pwd.charAt(y);
 				tempPassReverse = tempPassReverse + reversePwd.charAt(y);
 			}  
 		}
 
-		//var shaObj = new jsSHA(tempPass, 'TEXT');
+		var shaObj = new jsSHA(tempPass, 'TEXT');
 		var shaObjReverse = new jsSHA(tempPassReverse, 'TEXT');
 
-		//firstIntermediateKey = firstIntermediateKey + shaObj.getHash("SHA-512", "HEX");
+		firstIntermediateKey = firstIntermediateKey + shaObj.getHash("SHA-512", "HEX");
 		secondIntermediateKey = secondIntermediateKey + shaObjReverse.getHash("SHA-512", "HEX");
 
 	}
@@ -41,45 +41,49 @@ function generateKey(pwd, iv) {
 	/* Second round of hash generation  */
 	for(i = 0; i < sizeNbBlock - 1; i++) {
 		
-		//var tempKey = "";
+		var tempKey = "";
 		var tempKeyReverse = "";
 
 		for(y = 0; y < (sizeNbBlock - i) * 128; y++) {
-			//tempKey = tempKey + firstIntermediateKey.charAt(y + i * 128);
+			tempKey = tempKey + firstIntermediateKey.charAt(y + i * 128);
 			tempKeyReverse = tempKeyReverse + secondIntermediateKey.charAt(y + i * 128);
 		}
 		
-		//var shaObj = new jsSHA(tempKey, 'TEXT');
+		var shaObj = new jsSHA(tempKey, 'TEXT');
 		var shaObjReverse = new jsSHA(tempKeyReverse, 'TEXT');
 
-		//firstFinalKey = firstFinalKey + shaObj.getHash("SHA-512", "HEX");
+		firstFinalKey = firstFinalKey + shaObj.getHash("SHA-512", "HEX");
 		secondFinalKey = secondFinalKey + shaObjReverse.getHash("SHA-512", "HEX");
 	
 	}
 
-    //var lastHash = "";
+    var lastHash = "";
     var lastHashReverse = "";
 	for(i = 0; i < sizeNbBlock; i++) {
         if(i != sizeNbBlock - 2) {
             for(y = 0; y < 128; y++) {
-                //lastHash = lastHash + firstIntermediateKey.charAt(y + i * 128);
+                lastHash = lastHash + firstIntermediateKey.charAt(y + i * 128);
                 lastHashReverse = lastHashReverse + secondIntermediateKey.charAt(y + i * 128);
             }
         }
 	}
-    //var shaObj = new jsSHA(lastHash, 'TEXT');
+    var shaObj = new jsSHA(lastHash, 'TEXT');
     var shaObjReverse = new jsSHA(lastHashReverse, 'TEXT');
 
-    //firstFinalKey = firstFinalKey + shaObj.getHash("SHA-512", "HEX");
+    firstFinalKey = firstFinalKey + shaObj.getHash("SHA-512", "HEX");
     secondFinalKey = secondFinalKey + shaObjReverse.getHash("SHA-512", "HEX");
 
     /* Emulation of the shift byte */
+    firstFinalKey = firstFinalKey + firstFinalKey.charAt(0) + firstFinalKey.charAt(1);
+    firstFinalKey = firstFinalKey + firstFinalKey.charAt(2) + firstFinalKey.charAt(3);
+    firstFinalKey = firstFinalKey + firstFinalKey.charAt(4) + firstFinalKey.charAt(5);
     secondFinalKey = secondFinalKey + secondFinalKey.charAt(0) + secondFinalKey.charAt(1);
     secondFinalKey = secondFinalKey + secondFinalKey.charAt(2) + secondFinalKey.charAt(3);
     secondFinalKey = secondFinalKey + secondFinalKey.charAt(4) + secondFinalKey.charAt(5);
 
     /* Convert HEX into int array */
     var key = [];
+    var key2 = [];
 
     for(y = 0; y < 2; y++) {
 
@@ -88,6 +92,8 @@ function generateKey(pwd, iv) {
             var temp = secondFinalKey.charAt(i + (y * 2)) + secondFinalKey.charAt(i + (y * 2) + 1) + secondFinalKey.charAt(i + (y * 2) + 2) + secondFinalKey.charAt(i + (y * 2) + 3); // + secondFinalKey.charAt(i + (y * 2) + 4) + secondFinalKey.charAt(i + (y * 2) + 5) + secondFinalKey.charAt(i + (y * 2) + 6) + secondFinalKey.charAt(i + (y * 2) + 7);
             key.push(parseInt(temp, 16));
 
+            temp = firstFinalKey.charAt(i + (y * 2)) + firstFinalKey.charAt(i + (y * 2) + 1) + firstFinalKey.charAt(i + (y * 2) + 2) + firstFinalKey.charAt(i + (y * 2) + 3); // + firstFinalKey.charAt(i + (y * 2) + 4) + firstFinalKey.charAt(i + (y * 2) + 5) + firstFinalKey.charAt(i + (y * 2) + 6) + firstFinalKey.charAt(i + (y * 2) + 7);
+            key2.push(parseInt(temp, 16));
         }
 
     }
@@ -121,12 +127,71 @@ function generateKey(pwd, iv) {
     for(i = 0; i < key.length - 1; i++) {
 
         key[i] = ((key[i] * ivKey[i % ivKey.length]) % key[i + 1]) + ivKey[i % ivKey.length];
+        key2[i] = ((key2[i] * ivKey[i % ivKey.length]) % key2[i + 1]) + ivKey[i % ivKey.length];
+
     }
+
     var i = key.length - 1;
     key[i] = ((key[i] * ivKey[i % ivKey.length]) % key[0]) + ivKey[i % ivKey.length];
+    key2[i] = ((key2[i] * ivKey[i % ivKey.length]) % key2[0]) + ivKey[i % ivKey.length];
 
-    return key;
+    return {"map": key, "obfuscation": key2, "shaKeyMap": secondFinalKey, "shaKeyObfuscation": firstFinalKey};
 
+}
+
+function regenerateKeys(keys) {
+
+    firstFinalKeyOld = keys["shaKeyObfuscation"];
+    secondFinalKeyOld = keys["shaKeyMap"];
+    firstFinalKey = "";
+    secondFinalKey = "";
+
+    var sizeNbBlock = (firstFinalKeyOld.length - 6) / 128;
+
+	for(i = 0; i < sizeNbBlock; i++) {
+		
+		var tempKey = "";
+		var tempKeyReverse = "";
+
+		for(y = 0; y < 128; y++) {
+			tempKey = tempKey + firstFinalKeyOld.charAt(y + i * 128);
+			tempKeyReverse = tempKeyReverse + secondFinalKeyOld.charAt(y + i * 128);
+		}
+		
+		var shaObj = new jsSHA(tempKey, 'TEXT');
+		var shaObjReverse = new jsSHA(tempKeyReverse, 'TEXT');
+
+		firstFinalKey = firstFinalKey + shaObj.getHash("SHA-512", "HEX");
+		secondFinalKey = secondFinalKey + shaObjReverse.getHash("SHA-512", "HEX");
+	
+	}
+
+    /* Emulation of the shift byte */
+    firstFinalKey = firstFinalKey + firstFinalKey.charAt(0) + firstFinalKey.charAt(1);
+    firstFinalKey = firstFinalKey + firstFinalKey.charAt(2) + firstFinalKey.charAt(3);
+    firstFinalKey = firstFinalKey + firstFinalKey.charAt(4) + firstFinalKey.charAt(5);
+    secondFinalKey = secondFinalKey + secondFinalKey.charAt(0) + secondFinalKey.charAt(1);
+    secondFinalKey = secondFinalKey + secondFinalKey.charAt(2) + secondFinalKey.charAt(3);
+    secondFinalKey = secondFinalKey + secondFinalKey.charAt(4) + secondFinalKey.charAt(5);
+
+    /* Convert HEX into int array */
+    var key = [];
+    var key2 = [];
+
+    for(y = 0; y < 2; y++) {
+
+        for(i = 0; i < secondFinalKey.length - 6; i = i + 4) {
+
+            var temp = secondFinalKey.charAt(i + (y * 2)) + secondFinalKey.charAt(i + (y * 2) + 1) + secondFinalKey.charAt(i + (y * 2) + 2) + secondFinalKey.charAt(i + (y * 2) + 3); // + secondFinalKey.charAt(i + (y * 2) + 4) + secondFinalKey.charAt(i + (y * 2) + 5) + secondFinalKey.charAt(i + (y * 2) + 6) + secondFinalKey.charAt(i + (y * 2) + 7);
+            key.push(parseInt(temp, 16));
+
+            temp = firstFinalKey.charAt(i + (y * 2)) + firstFinalKey.charAt(i + (y * 2) + 1) + firstFinalKey.charAt(i + (y * 2) + 2) + firstFinalKey.charAt(i + (y * 2) + 3); // + firstFinalKey.charAt(i + (y * 2) + 4) + firstFinalKey.charAt(i + (y * 2) + 5) + firstFinalKey.charAt(i + (y * 2) + 6) + firstFinalKey.charAt(i + (y * 2) + 7);
+            key2.push(parseInt(temp, 16));
+        }
+
+    }
+
+    return {"map": key, "obfuscation": key2, "shaKeyMap": secondFinalKey, "shaKeyObfuscation": firstFinalKey};
 }
 
 function generateMap(size, key) {
