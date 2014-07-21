@@ -78,6 +78,7 @@ function processText(encrypt, force) {
             if(isPunctuation(array[i].charAt(0))) punctuationBegining = array[i].charAt(0);
             if(isPunctuation(array[i].charAt(array[i].length - 1))) punctuationEnd = array[i].charAt(array[i].length - 1);
 
+            var wordCase = getCase(array[i]);
             array[i] = removePonctuation(array[i]);
 
             var dicoName = getDicoName(array[i].toLowerCase());
@@ -88,7 +89,7 @@ function processText(encrypt, force) {
             }
             else word = array[i].toLowerCase();
 
-            document.getElementById("textAera").value += punctuationBegining + word + punctuationEnd + " ";
+            document.getElementById("textAera").value += punctuationBegining + setCase(word, wordCase) + punctuationEnd + " ";
 
         }
 
@@ -99,6 +100,44 @@ function processText(encrypt, force) {
         $(".boutongroup").hide();
         $(".boutongroupsure").show();
     }
+
+}
+
+String.prototype.replaceAt=function(index, character) {
+    return this.substr(0, index) + character + this.substr(index+character.length);
+}
+
+function getCase(word) {
+
+    var wordCase = [];
+
+    for(var i = 0; i < word.length; i++) {
+        var character = word[i];
+        if (character == character.toUpperCase()) {
+            wordCase[i] = true;
+        }
+        else {
+            wordCase[i] = false;
+        }
+    }
+
+    return wordCase;
+}
+
+function setCase(word, wordCase) {
+
+    for(var i = 0; i < word.length && i < wordCase.length; i++) {
+
+        if(wordCase[i]) {
+            word = word.replaceAt(i, word[i].toUpperCase());
+        }
+        else {
+            word = word.replaceAt(i, word[i].toLowerCase());
+        }
+
+    }
+
+    return word;
 
 }
 
