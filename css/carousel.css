@@ -237,6 +237,11 @@ a, a:hover, a:visited, a:active {
     display: none;
 }
 
+#loading {
+    margin: 20px;
+    display: none;
+}
+
 #pwd {
     border-color: #706E6E;
 }

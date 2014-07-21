@@ -12,19 +12,31 @@ function processText(encrypt, force) {
 
     if(Object.keys(dictionary).length != dictionaryNames.length) {
         nodeError.innerHTML = "Internal error : missing dictionaries";
-        return;
+        $(".boutongroup").show();
+        $(".boutongroupsure").hide();
+        $("#loading").hide();
+        return false;
     }
     if(document.getElementById("textAera").value == "") {
         nodeError.innerHTML = "No message to encrypt/decrypt.";
-        return;
+        $(".boutongroup").show();
+        $(".boutongroupsure").hide();
+        $("#loading").hide();
+        return false;
     }
     if(document.getElementById("pwd").value == "") {
         nodeError.innerHTML = "Need a password !";
-        return;
+        $(".boutongroup").show();
+        $(".boutongroupsure").hide();
+        $("#loading").hide();
+        return false;
     }
     if(document.getElementById("pwd").value.length < 9) {
         nodeError.innerHTML = "Password too short, minimum 9 characters.";
-        return;
+        $(".boutongroup").show();
+        $(".boutongroupsure").hide();
+        $("#loading").hide();
+        return false;
     }
 
     var text = document.getElementById("textAera").value;
@@ -46,7 +58,7 @@ function processText(encrypt, force) {
         for(var i = 0; i < array.length; i++) {
 
             var word = removePonctuation(array[i]);
-            if(!getDicoName(word)) {
+            if(!getDicoName(word.toLowerCase())) {
                 result = false;
 
                 nodeError.innerHTML = nodeError.innerHTML + word + " ";
@@ -78,10 +90,11 @@ function processText(encrypt, force) {
             if(isPunctuation(array[i].charAt(0))) punctuationBegining = array[i].charAt(0);
             if(isPunctuation(array[i].charAt(array[i].length - 1))) punctuationEnd = array[i].charAt(array[i].length - 1);
 
-            var wordCase = getCase(array[i]);
             array[i] = removePonctuation(array[i]);
+            var wordCase = getCase(array[i]);
+            array[i] = array[i].toLowerCase();
 
-            var dicoName = getDicoName(array[i].toLowerCase());
+            var dicoName = getDicoName(array[i]);
             var word = "";
             if(dicoName) {
                 word = changeWord(array[i], dicoName, encrypt, iv, positionWord);
@@ -93,12 +106,16 @@ function processText(encrypt, force) {
 
         }
 
+        return true;
+
     }
     else {
         nodeError.innerHTML = "These words are not in the dictionary: " + nodeError.innerHTML + ".";
         nodeError.innerHTML += "<br />They will not be encrypted, do you want to proceed anyway ?"
         $(".boutongroup").hide();
         $(".boutongroupsure").show();
+        
+        return false;
     }
 
 }
@@ -113,11 +130,11 @@ function getCase(word) {
 
     for(var i = 0; i < word.length; i++) {
         var character = word[i];
-        if (character == character.toUpperCase()) {
-            wordCase[i] = true;
+        if (character == character.toLowerCase()) {
+            wordCase[i] = false;
         }
         else {
-            wordCase[i] = false;
+            wordCase[i] = true;
         }
     }
 
@@ -233,26 +250,44 @@ function changeWord(word, dicoName, encrypt, iv, positionWord) {
 
 function encrypt() {
 
-    processText(true, false);
+    $(".boutongroup").hide();
+    $("#loading").show();
+
+    setTimeout(function() {
+        if(processText(true, false)) $(".boutongroup").show();
+        $("#loading").hide();
+    }, 100);
 
 }
 
 function decrypt() {
 
-    processText(false, true);
+    $(".boutongroup").hide();
+    $("#loading").show();
+
+    setTimeout(function() {
+        processText(false, true);
+        $(".boutongroup").show();
+        $("#loading").hide();
+    }, 100);
 
 }
 
 function encryptSure() {
 
-    processText(true, true);
+    $(".boutongroup").hide();
+    $(".boutongroupsure").hide();
+    $("#loading").show();
+
+    setTimeout(function() {
+        processText(true, true);
+        $(".boutongroup").show();
+        $("#loading").hide();
+    }, 100);
 
     var nodeError = document.getElementById("error");
     nodeError.innerHTML = "";
     
-    $(".boutongroup").show();
-    $(".boutongroupsure").hide();
-
 }
 
 function decryptSure() {
@@ -262,6 +297,7 @@ function decryptSure() {
     
     $(".boutongroup").show();
     $(".boutongroupsure").hide();
+    $("#loading").hide();
 
 }
 
@@ -280,7 +316,7 @@ function removePonctuation(text) {
     txt = txt.replace("_", "");
     txt = txt.replace("!", "");
 
-    txt = txt.toLowerCase();
+    //txt = txt.toLowerCase();
 
     return txt;
 }

@@ -111,29 +111,32 @@
             <h1>Steno.io</h1>
             <p>(Only English supported right now)</p>
             <div id="app" class="inner cover">
-            <div class="textinput">
-            <textarea rows="4" id="textAera" class="form-control" placeholder="Write down your message..."></textarea>
-            </div>
-            <div class="input-group">
-              <input type="password" id="pwd" class="form-control" placeholder="Choose a password">
-              <div id="error"></div>
-            </div>
-            <div class="boutongroup">
-            <button type="button" onclick="decrypt(); this.blur();" class="btn btn-default">
-                Decrypt</span>
-              </button>
-            <button type="button" onclick="encrypt(); this.blur();" class="btn btn-default">
-                Encrypt</span>
-              </button>
-            </div>
-            <div class="boutongroupsure">
-            <button type="button" onclick="decryptSure(); this.blur();" class="btn btn-default">
-                No</span>
-              </button>
-            <button type="button" onclick="encryptSure(); this.blur();" class="btn btn-default">
-                Yes</span>
-              </button>
-            </div>
+                <div class="textinput">
+                <textarea rows="4" id="textAera" class="form-control" placeholder="Write down your message..."></textarea>
+                </div>
+                <div class="input-group">
+                  <input type="password" id="pwd" class="form-control" placeholder="Choose a password">
+                  <div id="error"></div>
+                </div>
+                <div class="boutongroup">
+                <button type="button" onclick="decrypt(); this.blur();" class="btn btn-default">
+                    Decrypt</span>
+                  </button>
+                <button type="button" onclick="encrypt(); this.blur();" class="btn btn-default">
+                    Encrypt</span>
+                  </button>
+                </div>
+                <div class="boutongroupsure">
+                <button type="button" onclick="decryptSure(); this.blur();" class="btn btn-default">
+                    No</span>
+                  </button>
+                <button type="button" onclick="encryptSure(); this.blur();" class="btn btn-default">
+                    Yes</span>
+                  </button>
+                </div>
+                <div id="loading">
+                    <img src="./img/loading.gif" alt="loading" />
+                </div>
             </div>
       </div>
 
