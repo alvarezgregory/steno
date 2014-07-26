@@ -58,6 +58,8 @@ function processText(encrypt, force) {
         for(var i = 0; i < array.length; i++) {
 
             var word = removePonctuation(array[i]);
+            if(word === "") continue;
+
             if(!getDicoName(word.toLowerCase())) {
                 result = false;
 
@@ -321,6 +323,25 @@ function removePonctuation(text) {
     return txt;
 }
 
+function loadDicionaryFile(words, name) {
+
+    var dict = {};
+    var pos = [];
+
+    var y = 1; 
+    for ( var i = 0; i < words.length; i++ ) {
+        if(!getDicoName(words[i].toLowerCase()) && !dict[words[i].toLowerCase()]) {
+            dict[ words[i].toLowerCase() ] = y;
+            pos[y - 1] = words[i].toLowerCase();
+            y++;
+        }
+    }
+
+    dictionary[name] = {"lookup": dict, "position": pos};
+
+    loadDicionary();
+}
+
 function loadDicionary() {
 
     var name = "";
@@ -334,26 +355,28 @@ function loadDicionary() {
 
     if(name === "") return;
 
-    $.get("dico/english/" + name + ".txt", function( txt ) {
-        var dict = {};
-        var text = txt.replace(/(?:\r\n|\r|\n)/g, '\r\n');
-        var words = text.split( "\r\n" );
-        var pos = [];        
-
-        var y = 1; 
-        for ( var i = 0; i < words.length; i++ ) {
-            if(!getDicoName(words[i].toLowerCase()) && !dict[words[i].toLowerCase()]) {
-                dict[ words[i].toLowerCase() ] = y;
-                pos[y - 1] = words[i].toLowerCase();
-                y++;
-            }
-        }
-
-        dictionary[name] = {"lookup": dict, "position": pos};
-
-        loadDicionary();
-
-    });
+    switch(name) {
+        case "adjectives":
+            loadDicionaryFile(adjectivesFile,name);
+            break;
+        case "adverbs":
+            loadDicionaryFile(adverbsFile,name);
+            break;
+        case "nouns":
+            loadDicionaryFile(nounsFile,name);
+            break;
+        case "verbs":
+            loadDicionaryFile(verbsFile,name);
+            break;
+        case "pronouns":
+            loadDicionaryFile(pronounsFile,name);
+            break;
+        case "prepo":
+            loadDicionaryFile(prepoFile,name);
+            break;
+        default:
+            break;
+    }
 
 }
 
